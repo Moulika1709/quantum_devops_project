@@ -1,0 +1,123 @@
+name: Quantum Algorithm CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      backend:
+        description: "Backend to use: local | braket | qpu"
+        required: false
+        default: "braket"
+      shots:
+        description: "Number of shots per circuit execution"
+        required: false
+        default: "1024"
+
+env:
+  QUANTUM_BACKEND: ${{ github.event.inputs.backend || 'braket' }}
+  QUANTUM_SHOTS: ${{ github.event.inputs.shots || '1024' }}
+
+jobs:
+  quantum-tests:
+    name: Run Quantum Algorithm Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Configure AWS credentials
+        if: env.QUANTUM_BACKEND != 'local'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Run Grover algorithm tests
+        run: |
+          pytest tests/test_grover.py -v --tb=short
+        env:
+          QUANTUM_BACKEND: ${{ env.QUANTUM_BACKEND }}
+          QUANTUM_SHOTS: ${{ env.QUANTUM_SHOTS }}
+
+      - name: Run QFT algorithm tests
+        run: |
+          pytest tests/test_qft.py -v --tb=short
+        env:
+          QUANTUM_BACKEND: ${{ env.QUANTUM_BACKEND }}
+          QUANTUM_SHOTS: ${{ env.QUANTUM_SHOTS }}
+
+      - name: Run VQE algorithm tests
+        run: |
+          pytest tests/test_vqe.py -v --tb=short
+        env:
+          QUANTUM_BACKEND: ${{ env.QUANTUM_BACKEND }}
+          QUANTUM_SHOTS: ${{ env.QUANTUM_SHOTS }}
+
+      - name: Run simulator vs hardware comparison tests
+        run: |
+          pytest tests/test_sim_vs_hardware.py -v --tb=short
+        env:
+          QUANTUM_BACKEND: ${{ env.QUANTUM_BACKEND }}
+          QUANTUM_SHOTS: ${{ env.QUANTUM_SHOTS }}
+
+      - name: Generate full run reports
+        run: |
+          python run_all.py
+        env:
+          QUANTUM_BACKEND: ${{ env.QUANTUM_BACKEND }}
+          QUANTUM_SHOTS: ${{ env.QUANTUM_SHOTS }}
+          BRAKET_S3_BUCKET: ${{ secrets.BRAKET_S3_BUCKET }}
+          BRAKET_S3_PREFIX: ${{ secrets.BRAKET_S3_PREFIX }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantum-test-results
+          path: results/
+          retention-days: 30
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantum-reports
+          path: reports/
+          retention-days: 30
+
+      - name: Upload pytest report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-report
+          path: pytest-report.xml
+          retention-days: 30
+
+  lint:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install flake8
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --max-line-length=120 --exclude=.github --statistics
