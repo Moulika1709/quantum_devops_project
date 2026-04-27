@@ -1,0 +1,114 @@
+{
+  "generated_at": "2026-03-20T05:52:29.051819Z",
+  "framework": "DevOps Continuous Testing Framework for Quantum Algorithms",
+  "config": {
+    "shots": 1024,
+    "chi_squared_alpha": 0.05,
+    "fidelity_threshold": 0.9
+  },
+  "summary": {
+    "grover": {
+      "total_runs": 1,
+      "backends_tested": [
+        "local"
+      ],
+      "validations": [
+        {
+          "algorithm": "grover",
+          "chi_squared": {
+            "statistic": 13.603306,
+            "p_value": 0.058704,
+            "alpha": 0.05,
+            "passed": true
+          },
+          "top_state_accuracy": {
+            "top_state": "101",
+            "expected_state": "101",
+            "match": true,
+            "top_state_probability": 0.935547
+          },
+          "entropy": 0.517871,
+          "theoretical_target_probability": 0.945313,
+          "observed_target_probability": 0.935547
+        }
+      ]
+    },
+    "qft": {
+      "total_runs": 1,
+      "backends_tested": [
+        "local"
+      ],
+      "validations": [
+        {
+          "algorithm": "qft",
+          "entropy": 3.985483,
+          "max_possible_entropy": 4.0,
+          "entropy_ratio": 0.996371,
+          "non_trivial_output": false,
+          "top_state": "1101",
+          "top_state_probability": 0.079102,
+          "passed": false
+        }
+      ]
+    },
+    "vqe": {
+      "total_runs": 1,
+      "backends_tested": [
+        "local"
+      ],
+      "validations": [
+        {
+          "algorithm": "vqe",
+          "iterations": 5,
+          "mean_energy": 0.355078,
+          "std_energy": 0.607155,
+          "min_energy": -0.710938,
+          "has_negative_energy_estimate": true,
+          "passed": true
+        }
+      ]
+    }
+  },
+  "simulator_vs_hardware_comparison": {
+    "grover": {
+      "fidelity": 0.88362,
+      "fidelity_threshold": 0.9,
+      "passed": false,
+      "per_state_absolute_difference": {
+        "101": 0.387695,
+        "100": 0.0625,
+        "110": 0.056641,
+        "011": 0.054688,
+        "001": 0.060547,
+        "000": 0.055664,
+        "111": 0.055664,
+        "010": 0.041992
+      },
+      "mean_absolute_error": 0.096924
+    },
+    "qft": {
+      "fidelity": 0.996809,
+      "fidelity_threshold": 0.9,
+      "passed": true,
+      "per_state_absolute_difference": {
+        "1111": 0.021484,
+        "1010": 0.008789,
+        "0100": 0.001953,
+        "1011": 0.009766,
+        "1001": 0.005859,
+        "1101": 0.003906,
+        "0101": 0.001953,
+        "0000": 0.010742,
+        "0110": 0.013672,
+        "0001": 0.008789,
+        "1000": 0.014648,
+        "0011": 0.000977,
+        "0111": 0.001953,
+        "1110": 0.015625,
+        "0010": 0.005859,
+        "1100": 0.000977
+      },
+      "mean_absolute_error": 0.007935
+    }
+  }
+}

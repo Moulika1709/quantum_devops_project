@@ -1,0 +1,10 @@
+qiskit==1.2.4
+qiskit-aer==0.15.1
+qiskit-braket-provider==0.4.1
+amazon-braket-sdk
+amazon-braket-default-simulator
+scipy==1.14.1
+numpy==1.26.4
+pytest==8.3.3
+pytest-json-report==1.5.0
+flake8==7.1.1

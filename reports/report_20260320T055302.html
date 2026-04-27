@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quantum CI/CD Test Report</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f4; color: #222; }
+  h1 { color: #1a1a2e; }
+  h2 { color: #333; border-bottom: 2px solid #ccc; padding-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; margin-bottom: 30px; }
+  th { background: #1a1a2e; color: #fff; padding: 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid #ddd; vertical-align: top; }
+  tr:hover { background: #f0f0f0; }
+  pre { background: #eee; padding: 6px; font-size: 12px; overflow-x: auto; }
+  ul { margin: 0; padding-left: 18px; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: bold; font-size: 13px; }
+  .pass { background: #d4edda; color: #155724; }
+  .fail { background: #f8d7da; color: #721c24; }
+  .skip { background: #e2e3e5; color: #383d41; }
+  .meta { font-size: 13px; color: #555; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>DevOps Continuous Testing Framework - Quantum Algorithm Report</h1>
+<p class="meta">Generated: 2026-03-20 05:53:02 UTC | Shots: 1024 | Chi-squared alpha: 0.05 | Fidelity threshold: 0.9</p>
+
+<h2>Algorithm Test Results</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Backend</th>
+      <th>Shots</th>
+      <th>Timestamp</th>
+      <th>Status</th>
+      <th>Validation Details</th>
+    </tr>
+  </thead>
+  <tbody>
+            <tr>
+                <td>GROVER</td>
+                <td>local</td>
+                <td>1024</td>
+                <td></td>
+                <td><span class="badge skip">N/A</span></td>
+                <td><ul><li><b>algorithm:</b> grover</li><li><b>chi_squared:</b><pre>{
+  "statistic": 3.0,
+  "p_value": 0.885002,
+  "alpha": 0.05,
+  "passed": true
+}</pre></li><li><b>top_state_accuracy:</b><pre>{
+  "top_state": "101",
+  "expected_state": "101",
+  "match": true,
+  "top_state_probability": 0.945312
+}</pre></li><li><b>entropy:</b> 0.457546</li><li><b>theoretical_target_probability:</b> 0.945313</li><li><b>observed_target_probability:</b> 0.945312</li></ul></td>
+            </tr>
+            
+            <tr>
+                <td>QFT</td>
+                <td>local</td>
+                <td>1024</td>
+                <td></td>
+                <td><span class="badge pass">PASS</span></td>
+                <td><ul><li><b>algorithm:</b> qft</li><li><b>entropy:</b> 3.990895</li><li><b>max_possible_entropy:</b> 4.0</li><li><b>entropy_ratio:</b> 0.997724</li><li><b>non_trivial_output:</b> True</li><li><b>top_state:</b> 1110</li><li><b>top_state_probability:</b> 0.074219</li></ul></td>
+            </tr>
+            
+            <tr>
+                <td>VQE</td>
+                <td>local</td>
+                <td>1024</td>
+                <td></td>
+                <td><span class="badge pass">PASS</span></td>
+                <td><ul><li><b>algorithm:</b> vqe</li><li><b>iterations:</b> 5</li><li><b>mean_energy:</b> 0.071875</li><li><b>std_energy:</b> 0.537461</li><li><b>min_energy:</b> -0.800781</li><li><b>has_negative_energy_estimate:</b> True</li></ul></td>
+            </tr>
+            </tbody>
+</table>
+
+
+        <h2>Simulator vs Hardware Comparison</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Fidelity</th>
+                    <th>Mean Absolute Error</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>GROVER</td>
+                <td>0.86837</td>
+                <td>0.102539</td>
+                <td><span class="badge fail">FAIL</span></td>
+            </tr>
+            
+            <tr>
+                <td>QFT</td>
+                <td>0.995611</td>
+                <td>0.009522</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            </tbody>
+        </table>
+        
+</body>
+</html>
